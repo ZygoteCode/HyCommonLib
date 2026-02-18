@@ -39,6 +39,7 @@ import com.hypixel.hytale.server.core.modules.entity.component.TransformComponen
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathComponent;
 import com.hypixel.hytale.server.core.modules.entity.player.ChunkTracker;
 import com.hypixel.hytale.server.core.modules.entity.player.KnockbackSimulation;
+import com.hypixel.hytale.server.core.modules.entity.player.PlayerSettings;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.modules.entitystats.EntityStatMap;
 import com.hypixel.hytale.server.core.modules.entitystats.EntityStatValue;
@@ -52,6 +53,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.WorldMapTracker;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
+import com.hypixel.hytale.server.core.util.TempAssetIdUtil;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import me.zygotecode.hycommonlib.HsServer;
 import me.zygotecode.hycommonlib.world.HsWorld;
@@ -64,8 +66,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
-import com.hypixel.hytale.server.core.util.TempAssetIdUtil;
 
 public class HsPlayer {
     private final UUID uuid;
@@ -1103,10 +1103,6 @@ public class HsPlayer {
         return this.getInventory().getUtility();
     }
 
-    public CombinedItemContainer getCombinedArmorHotbarStorage() {
-        return this.getInventory().getCombinedArmorHotbarStorage();
-    }
-
     public CombinedItemContainer getCombinedArmorHotbarUtilityStorage() {
         return this.getInventory().getCombinedArmorHotbarUtilityStorage();
     }
@@ -1183,8 +1179,8 @@ public class HsPlayer {
         return this.getInventory().dropAllItemStacks();
     }
 
-    public void smartMoveItem(int fromSectionId, int fromSlotId, int quantity, SmartMoveType type) {
-        this.getInventory().smartMoveItem(fromSectionId, fromSlotId, quantity, type);
+    public void smartMoveItem(int fromSectionId, int fromSlotId, int quantity, @Nonnull SmartMoveType moveType, PlayerSettings settings) {
+        this.getInventory().smartMoveItem(fromSectionId, fromSlotId, quantity, moveType, settings);
     }
 
     public void moveItem(int fromSectionId, int fromSlotId, int quantity, int toSectionId, int toSlotId) {
@@ -1284,10 +1280,6 @@ public class HsPlayer {
         );
     }
 
-    public void dismountFromMount() {
-        MountPlugin.dismountNpc(this.getStore(), this.getMountEntityId());
-    }
-
     public PlayerWorldData getPlayerWorldData(String worldName) {
         return this.getPlayerConfigData().getPerWorldData(worldName);
     }
@@ -1304,10 +1296,6 @@ public class HsPlayer {
         return new HsPosition(this.getPlayerCurrentWorldData().getLastPosition());
     }
 
-    public MapMarker[] getWorldMapMarkers() {
-        return this.getPlayerCurrentWorldData().getWorldMapMarkers();
-    }
-
     public PlayerRespawnPointData[] getRespawnPoints() {
         return this.getPlayerCurrentWorldData().getRespawnPoints();
     }
@@ -1322,10 +1310,6 @@ public class HsPlayer {
 
     public void setPlayerConfigData(PlayerConfigData playerConfigData) {
         this.getPlayerCurrentWorldData().setPlayerConfigData(playerConfigData);
-    }
-
-    public void setWorldMapMarkers(MapMarker[] mapMarkers) {
-        this.getPlayerCurrentWorldData().setWorldMapMarkers(mapMarkers);
     }
 
     public void setLastPosition(Transform lastPosition) {

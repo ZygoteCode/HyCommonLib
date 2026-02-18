@@ -596,7 +596,7 @@ public class HsServer {
         }
     }
 
-    public static void broadcastPackets(Packet... packets) {
+    /*public static void broadcastPackets(Packet... packets) {
         Universe.get().broadcastPacket(packets);
     }
 
@@ -606,7 +606,7 @@ public class HsServer {
 
     public static void broadcastPacketNoCache(Packet packet) {
         Universe.get().broadcastPacketNoCache(packet);
-    }
+    }*/
 
     public static void disconnectAllPlayers() {
         Universe.get().disconnectAllPLayers();

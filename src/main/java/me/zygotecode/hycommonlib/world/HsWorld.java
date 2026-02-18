@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -89,12 +90,26 @@ public class HsWorld {
         this.getHytaleWorld().broadcastFeatures();
     }
 
+    public void movePlayersToWorld(World world, Collection<PlayerRef> players) {
+        this.getHytaleWorld().drainPlayersTo(world, players);
+    }
+
+    public void movePlayersToWorld(HsWorld world, Collection<PlayerRef> players) {
+        this.getHytaleWorld().drainPlayersTo(world.getHytaleWorld(), players);
+    }
+
     public void movePlayersToWorld(World world) {
-        this.getHytaleWorld().drainPlayersTo(world);
+        Collection<PlayerRef> collection = new ArrayList<>();
+
+        for (HsPlayer player: this.getPlayers()) {
+            collection.add(player.getPlayerRef());
+        }
+
+        this.getHytaleWorld().drainPlayersTo(world, collection);
     }
 
     public void movePlayersToWorld(HsWorld world) {
-        this.getHytaleWorld().drainPlayersTo(world.getHytaleWorld());
+        this.movePlayersToWorld(world.getHytaleWorld());
     }
 
     public void stop() {
